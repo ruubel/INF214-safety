@@ -34,6 +34,7 @@ import org.hisp.dhis.common.ListMap;
 import org.hisp.dhis.common.ReportingRate;
 import org.hisp.dhis.common.SetMap;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOption;
 import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
 import org.hisp.dhis.dataelement.DataElementOperand;
 import org.hisp.dhis.indicator.Indicator;
@@ -62,6 +63,7 @@ import static java.util.regex.Pattern.CASE_INSENSITIVE;
  * <li>Program data elements on the form D{programuid.dataelementuid}</li>
  * <li>Program tracked entity attribute on the form A{programuid.attributeuid}</li>
  * <li>Program indicators on the form I{programindicatoruid}</li>
+ * <li>Reporting rates on the form R{reportingrateuid.metric}. See available metrics here {@link org.hisp.dhis.common.ReportingRateMetric}</li>
  * <li>Constants on the form C{constantuid}</li>
  * <li>Organisation unit group member counts on the form OUG{orgunitgroupuid}</li>
  * <li>Days in aggregation period as the symbol [days]</li>

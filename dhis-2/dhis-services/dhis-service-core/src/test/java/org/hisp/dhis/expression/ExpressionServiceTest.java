@@ -155,6 +155,7 @@ public class ExpressionServiceTest
     private String expressionN;
 
     private String expressionR;
+    private String expressionO;
 
     private String descriptionA;
     private String descriptionB;
@@ -227,7 +228,6 @@ public class ExpressionServiceTest
 
         coc = categoryService.getDefaultDataElementCategoryOptionCombo();
 
-        coc.getId();
         optionCombos.add( coc );
 
         opA = new DataElementOperand( deA, coc );
@@ -294,6 +294,8 @@ public class ExpressionServiceTest
         expressionM = "#{" + deA.getUid() + SEPARATOR + SYMBOL_WILDCARD + "}-#{" + deB.getUid() + SEPARATOR + coc.getUid() + "}";
         expressionN = "#{" + deA.getUid() + SEPARATOR + cocA.getUid() + SEPARATOR + cocB.getUid() + "}-#{" + deB.getUid() + SEPARATOR + cocA.getUid() + "}";
         expressionR = "#{" + deB.getUid() + SEPARATOR + coc.getUid() + "}" + " + R{" + reportingRate.getUid() + ".REPORTING_RATE}";
+
+        expressionO = "O{" + deA.getUid() + SEPARATOR + categoryOptionB.getUid() + "}";
 
         descriptionA = "Expression A";
         descriptionB = "Expression B";
@@ -408,11 +410,20 @@ public class ExpressionServiceTest
     }
 
     @Test
+    public void testGetDataElementCategoryOptionInExpression()
+    {
+        Set<DimensionalItemObject> deCategoryOptions = expressionService.getDimensionalItemObjectsInExpression( expressionO );
+
+        System.out.println(deCategoryOptions);
+        assertEquals( 2, deCategoryOptions.size() );
+    }
+
+    @Test
     public void testGetAggregatesAndNonAggregtesInExpression()
     {
         Set<String> aggregates = new HashSet<>();
         Set<String> nonAggregates = new HashSet<>();
-        expressionService.getAggregatesAndNonAggregatesInExpression( expressionK.toString(), aggregates, nonAggregates );
+        expressionService.getAggregatesAndNonAggregatesInExpression( expressionK, aggregates, nonAggregates );
 
         assertEquals( 1, aggregates.size() );
         assertTrue( aggregates.contains( expressionJ ) );
@@ -422,7 +433,7 @@ public class ExpressionServiceTest
 
         aggregates = new HashSet<>();
         nonAggregates = new HashSet<>();
-        expressionService.getAggregatesAndNonAggregatesInExpression( expressionL.toString(), aggregates, nonAggregates );
+        expressionService.getAggregatesAndNonAggregatesInExpression( expressionL, aggregates, nonAggregates );
 
         assertEquals( 1, aggregates.size() );
         assertTrue( aggregates.contains( expressionJ ) );
