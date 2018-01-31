@@ -14,12 +14,6 @@
 
     <!-- Apps pulled from Maven repository -->
 
-    <package name="dhis-web-dashboards" extends="dhis-web-commons" namespace="/dhis-web-dashboards">
-        <action name="index" class="org.hisp.dhis.commons.action.NoAction">
-            <result name="success" type="redirect">index.html</result>
-        </action>
-    </package>
-
     <package name="dhis-web-visualizer" extends="dhis-web-commons" namespace="/dhis-web-visualizer">
         <action name="index" class="org.hisp.dhis.commons.action.NoAction">
             <result name="success" type="redirect">index.html</result>
@@ -96,6 +90,12 @@
     </package>
 
     <package name="dhis-web-tracker-capture" extends="dhis-web-commons" namespace="/dhis-web-tracker-capture">
+        <action name="index" class="org.hisp.dhis.commons.action.NoAction">
+            <result name="success" type="redirect">index.html</result>
+        </action>
+    </package>
+
+    <package name="dhis-web-dashboard" extends="dhis-web-commons" namespace="/dhis-web-dashboard">
         <action name="index" class="org.hisp.dhis.commons.action.NoAction">
             <result name="success" type="redirect">index.html</result>
         </action>
