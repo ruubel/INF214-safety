@@ -1,4 +1,4 @@
-package org.hisp.dhis.entity;
+package org.hisp.dhis.schema.descriptors;
 
 /*
  * Copyright (c) 2004-2018, University of Oslo
@@ -28,16 +28,34 @@ package org.hisp.dhis.entity;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import org.hisp.dhis.common.BaseIdentifiableObject;
-import org.hisp.dhis.common.DxfNamespaces;
-import org.hisp.dhis.common.MetadataObject;
+import com.google.common.collect.Lists;
+import org.hisp.dhis.entity.Entity;
+import org.hisp.dhis.schema.Schema;
+import org.hisp.dhis.schema.SchemaDescriptor;
+import org.hisp.dhis.security.Authority;
+import org.hisp.dhis.security.AuthorityType;
 
 /**
  * @author Morten Olav Hansen <mortenoh@gmail.com>
  */
-@JacksonXmlRootElement( localName = "entity", namespace = DxfNamespaces.DXF_2_0 )
-public class Entity extends BaseIdentifiableObject
-    implements MetadataObject
+public class EntitySchemaDescriptor implements SchemaDescriptor
 {
+    public static final String SINGULAR = "entity";
+
+    public static final String PLURAL = "entities";
+
+    public static final String API_ENDPOINT = "/" + PLURAL;
+
+    @Override
+    public Schema getSchema()
+    {
+        Schema schema = new Schema( Entity.class, SINGULAR, PLURAL );
+        schema.setRelativeApiEndpoint( API_ENDPOINT );
+        schema.setOrder( 2000 );
+
+        schema.getAuthorities().add( new Authority( AuthorityType.CREATE, Lists.newArrayList( "F_ENTITY_ADD" ) ) );
+        schema.getAuthorities().add( new Authority( AuthorityType.DELETE, Lists.newArrayList( "F_ENTITY_DELETE" ) ) );
+
+        return schema;
+    }
 }
