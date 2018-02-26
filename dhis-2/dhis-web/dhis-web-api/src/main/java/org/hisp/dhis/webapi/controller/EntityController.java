@@ -31,6 +31,7 @@ package org.hisp.dhis.webapi.controller;
 import org.hisp.dhis.entity.Entity;
 import org.hisp.dhis.schema.descriptors.EntitySchemaDescriptor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
