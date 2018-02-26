@@ -32,7 +32,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import org.hisp.dhis.analytics.AnalyticsTableHook;
 import org.hisp.dhis.attribute.Attribute;
 import org.hisp.dhis.chart.Chart;
@@ -61,6 +60,7 @@ import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.dataset.Section;
 import org.hisp.dhis.document.Document;
 import org.hisp.dhis.dxf2.events.event.Event;
+import org.hisp.dhis.entity.Entity;
 import org.hisp.dhis.eventchart.EventChart;
 import org.hisp.dhis.eventreport.EventReport;
 import org.hisp.dhis.indicator.Indicator;
@@ -94,8 +94,8 @@ import org.hisp.dhis.report.Report;
 import org.hisp.dhis.reporttable.ReportTable;
 import org.hisp.dhis.schema.Schema;
 import org.hisp.dhis.sqlview.SqlView;
-import org.hisp.dhis.trackedentity.TrackedEntityType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
+import org.hisp.dhis.trackedentity.TrackedEntityType;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserAuthorityGroup;
 import org.hisp.dhis.user.UserGroup;
@@ -253,6 +253,8 @@ public class Metadata
     private List<AnalyticsTableHook> analyticsTableHooks = new ArrayList<>();
 
     private List<ValidationNotificationTemplate> validationNotificationTemplates = new ArrayList<>();
+
+    private List<Entity> entities = new ArrayList<>();
 
     public Metadata()
     {
@@ -1165,6 +1167,19 @@ public class Metadata
     public void setValidationNotificationTemplates( List<ValidationNotificationTemplate> validationNotificationTemplates )
     {
         this.validationNotificationTemplates = validationNotificationTemplates;
+    }
+
+    @JsonProperty
+    @JacksonXmlElementWrapper( localName = "entities", namespace = DxfNamespaces.DXF_2_0 )
+    @JacksonXmlProperty( localName = "entity", namespace = DxfNamespaces.DXF_2_0 )
+    public List<Entity> getEntities()
+    {
+        return entities;
+    }
+
+    public void setEntities( List<Entity> entities )
+    {
+        this.entities = entities;
     }
 
     @Override

@@ -62,6 +62,7 @@ import org.hisp.dhis.dataelement.DataElementGroupSet;
 import org.hisp.dhis.dataentryform.DataEntryForm;
 import org.hisp.dhis.dataset.DataSet;
 import org.hisp.dhis.datavalue.DataValue;
+import org.hisp.dhis.entity.Entity;
 import org.hisp.dhis.expression.Expression;
 import org.hisp.dhis.expression.Operator;
 import org.hisp.dhis.external.location.LocationManager;
@@ -112,9 +113,9 @@ import org.hisp.dhis.relationship.RelationshipType;
 import org.hisp.dhis.render.RenderService;
 import org.hisp.dhis.sqlview.SqlView;
 import org.hisp.dhis.sqlview.SqlViewType;
-import org.hisp.dhis.trackedentity.TrackedEntityType;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
+import org.hisp.dhis.trackedentity.TrackedEntityType;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityfilter.TrackedEntityInstanceFilter;
 import org.hisp.dhis.user.User;
@@ -148,7 +149,6 @@ import javax.xml.namespace.NamespaceContext;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -180,6 +180,7 @@ public abstract class DhisConvenienceTest
     protected static final String BASE_COC_UID = "cuabcdefgh";
     protected static final String BASE_USER_UID = "userabcdef";
     protected static final String BASE_USER_GROUP_UID = "ugabcdefgh";
+    protected static final String BASE_ENTITY_UID = "aaarabcdef";
 
     private static final String EXT_TEST_DIR = System.getProperty( "user.home" ) + File.separator + "dhis2_test_dir";
 
@@ -1218,20 +1219,20 @@ public abstract class DhisConvenienceTest
 
         return legendSet;
     }
-    
+
     public static ColorSet createColorSet( char uniqueCharacter, String... hexColorCodes )
     {
         ColorSet colorSet = new ColorSet();
         colorSet.setAutoFields();
         colorSet.setName( "ColorSet" + uniqueCharacter );
-        
+
         for ( String colorCode : hexColorCodes )
         {
             Color color = new Color( colorCode );
             color.setAutoFields();
             colorSet.getColors().add( color );
         }
-        
+
         return colorSet;
     }
 
@@ -1501,7 +1502,7 @@ public abstract class DhisConvenienceTest
     {
         return createProgramIndicator( uniqueCharacter, AnalyticsType.EVENT, program, expression, filter );
     }
-    
+
     public static ProgramIndicator createProgramIndicator( char uniqueCharacter, AnalyticsType analyticsType, Program program, String expression, String filter )
     {
         ProgramIndicator indicator = new ProgramIndicator();
@@ -1514,7 +1515,7 @@ public abstract class DhisConvenienceTest
         indicator.setExpression( expression );
         indicator.setAnalyticsType( analyticsType );
         indicator.setFilter( filter );
-        
+
         List<AnalyticsPeriodBoundary> boundaries = new ArrayList<AnalyticsPeriodBoundary>();
         if ( analyticsType == AnalyticsType.EVENT )
         {
@@ -1539,7 +1540,7 @@ public abstract class DhisConvenienceTest
 
         return section;
     }
-    
+
     public static TrackedEntityInstanceFilter createTrackedEntityInstanceFilter( char uniqueChar, Program program )
     {
         TrackedEntityInstanceFilter trackedEntityInstanceFilter = new TrackedEntityInstanceFilter();
@@ -2185,6 +2186,18 @@ public abstract class DhisConvenienceTest
         de.setCode( "DCode" + name );
 
         return new ProgramDataElementDimensionItem( pr, de );
+    }
+
+    protected Entity createEntity( char name )
+    {
+        Entity entity = new Entity();
+        entity.setUid( BASE_ENTITY_UID + name );
+        entity.setCode( "EntityCode" + name );
+        entity.setName( "Entity" + name );
+
+        entity.setAutoFields();
+
+        return entity;
     }
 
     protected void enableDataSharing( User user, IdentifiableObject object, String access )
