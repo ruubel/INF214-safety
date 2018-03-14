@@ -58,7 +58,6 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author eirikmi
  */
-//@SuppressWarnings( "unused" )
 public class MinMaxOutlierAnalysisServiceTest
     extends DhisTest
 {
