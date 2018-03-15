@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.appmanager.AppStatus;
+import org.hisp.dhis.appstore.WebAppVersion;
 import org.hisp.dhis.setting.SettingKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by zubair@dhis2.org on 07.09.17.
@@ -79,17 +82,15 @@ public class DefaultAppStoreService implements AppStoreService
 
         try
         {
-            Optional<AppVersion> webAppVersion = getWebAppVersion( id );
+            Optional<WebApp> webApp = getWebApp( id );
 
-            if ( webAppVersion.isPresent() )
+            if ( webApp.isPresent() )
             {
-                AppVersion version = webAppVersion.get();
+                WebApp app = webApp.get();
 
-                URL url = new URL( version.getDownloadUrl() );
+                URL url = new URL( app.getVersion( id ).getDownloadUrl() );
 
-                String filename = version.getFilename();
-
-                return appManager.installApp( getFile( url ), filename );
+                return appManager.installApp( getFile( url ), app.getName() );
             }
 
             log.info( String.format( "No version found for id %s", id ) );
@@ -102,11 +103,26 @@ public class DefaultAppStoreService implements AppStoreService
         }
     }
 
+    public String getNewestCompatibleVersion( String appName, String dhisVersion )
+        throws IOException, NoSuchElementException
+    {
+        List<WebApp> webApps = getAppStore().stream()
+            .filter( app -> app.getName().equals( appName ) )
+            .collect( Collectors.toList() );
+
+        if ( webApps.isEmpty() )
+        {
+            throw new NoSuchElementException( String.format( "Could not find any apps named '%s'", appName ) );
+        }
+
+        return webApps.get( 0 ).getNewestCompatibleVersion( dhisVersion ).getId();
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
 
-    private Optional<AppVersion> getWebAppVersion( String id )
+    private Optional<WebApp> getWebApp( String id )
         throws IOException
     {
         for ( WebApp app : getAppStore() )
@@ -115,7 +131,7 @@ public class DefaultAppStoreService implements AppStoreService
             {
                 if ( id.equals( version.getId() ) )
                 {
-                    return Optional.of( version );
+                    return Optional.of( app );
                 }
             }
         }

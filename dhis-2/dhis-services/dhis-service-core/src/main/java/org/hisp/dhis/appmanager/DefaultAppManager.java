@@ -190,6 +190,7 @@ public class DefaultAppManager
     {
         return jCloudsAppStorageService.installApp( file, fileName );
     }
+    
 
     @Override
     public boolean exists( String appName )

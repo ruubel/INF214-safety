@@ -32,9 +32,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hisp.dhis.appmanager.AppStatus;
 import org.hisp.dhis.appmanager.AppType;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by zubair@dhis2.org on 07.09.17.
@@ -210,5 +209,28 @@ public class WebApp
     public void setLastUpdated( Date lastUpdated )
     {
         this.lastUpdated = lastUpdated;
+    }
+
+    public AppVersion getNewestCompatibleVersion( String dhisVersion )
+    {
+        List<AppVersion> compatibleVersions = versions.stream()
+            .filter( version -> versionNumber( version.getMinDhisVersion() ) <= versionNumber( dhisVersion ) )
+            .sorted( Comparator.comparing( version -> versionNumber( version.getVersion() ) ) )
+            .collect( Collectors.toList() );
+
+        return compatibleVersions.get( compatibleVersions.size() - 1 );
+    }
+
+    public AppVersion getVersion( String id )
+    {
+        return versions.stream()
+            .filter( version -> version.getId().equals( id ) )
+            .collect( Collectors.toList() )
+            .get( 0 );
+    }
+
+    private int versionNumber( String version )
+    {
+        return Integer.parseInt( version.replaceAll( "[^0-9]", "" ) );
     }
 }

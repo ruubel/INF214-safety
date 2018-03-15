@@ -33,6 +33,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.appmanager.AppStatus;
+import org.hisp.dhis.appstore2.AppStoreService;
 import org.hisp.dhis.common.DhisApiVersion;
 import org.hisp.dhis.dxf2.webmessage.WebMessageException;
 import org.hisp.dhis.dxf2.webmessage.WebMessageUtils;
@@ -89,6 +90,9 @@ public class AppController
 
     @Autowired
     private ContextService contextService;
+
+    @Autowired
+    private AppStoreService appStoreService;
 
     // -------------------------------------------------------------------------
     // Resources
@@ -262,6 +266,26 @@ public class AppController
             appManager.setAppStoreUrl( appStoreUrl );
         }
     }
+
+    @RequestMapping( value = "/{app}", method = RequestMethod.PATCH )
+    @PreAuthorize( "hasRole('ALL') or hasRole('M_dhis-web-app-management')" )
+    @ResponseStatus( HttpStatus.NO_CONTENT )
+    public void updateApp(  @PathVariable( "app" ) String app, HttpServletRequest request )
+        throws IOException, WebMessageException
+    {
+        App application = appManager.getApp( app );
+
+        if ( application == null )
+        {
+            throw new WebMessageException( WebMessageUtils.notFound( "App '" + app + "' not found." ) );
+        }
+
+        String newVersion = appStoreService.getNewestCompatibleVersion( application.getName(), "2.30" );
+
+        appStoreService.installAppFromAppStore( newVersion );
+
+    }
+
 
     //--------------------------------------------------------------------------
     // Helpers

@@ -222,7 +222,7 @@ public class JCloudsAppStorageService
 
                 app.setAppStorageSource( AppStorageSource.JCLOUDS );
                 app.setFolderName( resource.getName() );
-
+                app.setName( resource.getName().replaceAll("apps/", "" ).replaceAll("/", "") );
                 appList.add( app );
             }
             catch ( IOException e )
@@ -323,7 +323,11 @@ public class JCloudsAppStorageService
             // Unzip the app
             // -----------------------------------------------------------------
 
-            String dest = APPS_DIR + File.separator + filename.substring( 0, filename.lastIndexOf( '.' ) );
+            int lastDot = filename.contains( "." ) ? filename.lastIndexOf( '.' ) : filename.length();
+
+            String dest = APPS_DIR + File.separator + filename.substring( 0, lastDot );
+
+            app.setName( filename );
 
             zip.stream().forEach( new Consumer<ZipEntry>()
             {

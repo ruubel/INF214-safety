@@ -30,6 +30,7 @@ package org.hisp.dhis.appstore2;
 
 import org.hisp.dhis.appmanager.AppStatus;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -40,4 +41,6 @@ public interface AppStoreService
     List<WebApp> getAppStore();
 
     AppStatus installAppFromAppStore( String id );
+
+    String getNewestCompatibleVersion( String appName, String dhisVersion ) throws IOException;
 }
