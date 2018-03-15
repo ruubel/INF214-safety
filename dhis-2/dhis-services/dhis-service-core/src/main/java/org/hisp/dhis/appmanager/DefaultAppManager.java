@@ -77,6 +77,7 @@ public class DefaultAppManager
     @Override
     public List<App> getApps( String contextPath )
     {
+
         List<App> apps = Lists.newArrayList( getAppMap().values() );
         
         apps.forEach( a -> a.init( contextPath ) );
@@ -273,6 +274,11 @@ public class DefaultAppManager
         return getAppStorageServiceByApp( app ).getAppResource( app, pageName );
     }
 
+    public void checkForUpdates()
+    {
+
+    }
+
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
@@ -292,6 +298,7 @@ public class DefaultAppManager
     private Map<String, App> getAppMap()
     {
         Map<String, App> apps = new HashMap<>();
+
 
         apps.putAll( jCloudsAppStorageService.getApps() );
         apps.putAll( localAppStorageService.getApps() );

@@ -31,9 +31,9 @@ package org.hisp.dhis.appstore2;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppManager;
 import org.hisp.dhis.appmanager.AppStatus;
-import org.hisp.dhis.appstore.WebAppVersion;
 import org.hisp.dhis.setting.SettingKey;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +45,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.hisp.dhis.commons.util.TextUtils.versionNumber;
 
 /**
  * Created by zubair@dhis2.org on 07.09.17.
@@ -116,6 +116,18 @@ public class DefaultAppStoreService implements AppStoreService
         }
 
         return webApps.get( 0 ).getNewestCompatibleVersion( dhisVersion ).getId();
+    }
+
+    public void updateAppStatus( Set<App> apps )
+    {
+        Map<String, WebApp> webApps = getAppStore().stream()
+            .collect( Collectors.toMap( WebApp::getName, Function.identity() ) );
+
+        apps.stream()
+            .filter( app -> webApps.containsKey( app.getName() ) )
+            .filter( app -> versionNumber( webApps.get( app.getName() ).getNewestVersion().getVersion() )
+                > versionNumber( app.getVersion() ) )
+            .forEach( app -> app.setAppStatus( AppStatus.OUT_OF_DATE ) );
     }
 
     // -------------------------------------------------------------------------

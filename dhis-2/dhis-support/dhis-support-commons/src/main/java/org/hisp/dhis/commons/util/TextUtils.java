@@ -639,4 +639,14 @@ public class TextUtils
         
         return replaced;
     }
+
+    /**
+     * Returns a numerical representation of a version string
+     *
+     * @param version the string representation of the version
+     */
+    public static Integer versionNumber( String version )
+    {
+        return Integer.parseInt( version.replaceAll( "[^0-9]", "" ) );
+    }
 }

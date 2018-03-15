@@ -35,6 +35,8 @@ import org.hisp.dhis.appmanager.AppType;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.hisp.dhis.commons.util.TextUtils.versionNumber;
+
 /**
  * Created by zubair@dhis2.org on 07.09.17.
  */
@@ -221,16 +223,19 @@ public class WebApp
         return compatibleVersions.get( compatibleVersions.size() - 1 );
     }
 
+    public AppVersion getNewestVersion()
+    {
+        return versions.stream()
+            .sorted( Comparator.comparing( version -> - versionNumber( version.getVersion() ) ) )
+            .collect( Collectors.toList() )
+            .get( 0 );
+    }
+
     public AppVersion getVersion( String id )
     {
         return versions.stream()
             .filter( version -> version.getId().equals( id ) )
             .collect( Collectors.toList() )
             .get( 0 );
-    }
-
-    private int versionNumber( String version )
-    {
-        return Integer.parseInt( version.replaceAll( "[^0-9]", "" ) );
     }
 }

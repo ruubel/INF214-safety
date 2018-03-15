@@ -28,10 +28,12 @@ package org.hisp.dhis.appstore2;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppStatus;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by zubair@dhis2.org on 07.09.17.
@@ -43,4 +45,6 @@ public interface AppStoreService
     AppStatus installAppFromAppStore( String id );
 
     String getNewestCompatibleVersion( String appName, String dhisVersion ) throws IOException;
+
+    void updateAppStatus( Set<App> apps );
 }
