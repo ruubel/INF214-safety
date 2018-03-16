@@ -47,7 +47,7 @@ public class DefaultConfigurationService
     private GenericStore<Configuration> configurationStore;
 
     @Autowired
-    CurrentUserService currentUserService;
+    private CurrentUserService currentUserService;
 
     public void setConfigurationStore( GenericStore<Configuration> configurationStore )
     {
