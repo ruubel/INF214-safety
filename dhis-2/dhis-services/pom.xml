@@ -29,6 +29,7 @@
     <module>dhis-service-dxf2</module>
     <module>dhis-service-mobile</module>
     <module>dhis-service-administration</module>
+    <module>dhis-service-programrule</module>
     <!-- Level 5 -->
     <module>dhis-service-analytics</module>
     <!-- Level 6 -->
