@@ -158,6 +158,7 @@ public class AppController
     public void reloadApps()
     {
         appManager.reloadApps();
+        appStoreService.updateAppStatus( appManager.getApps( null ) );
     }
 
     @RequestMapping( value = "/{app}/**", method = RequestMethod.GET )

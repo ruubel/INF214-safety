@@ -32,6 +32,7 @@ import org.hisp.dhis.appmanager.App;
 import org.hisp.dhis.appmanager.AppStatus;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -46,5 +47,5 @@ public interface AppStoreService
 
     String getNewestCompatibleVersion( String appName, String dhisVersion ) throws IOException;
 
-    void updateAppStatus( Set<App> apps );
+    void updateAppStatus( Collection<App> apps );
 }

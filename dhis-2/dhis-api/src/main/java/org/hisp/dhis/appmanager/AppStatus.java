@@ -40,7 +40,8 @@ public enum AppStatus
     MISSING_SYSTEM_BASE_URL( "system_base_url_is_not_defined" ),
     APPROVED( "approved" ),
     PENDING( "pending" ),
-    NOT_APPROVED( "not_approved" );
+    NOT_APPROVED( "not_approved" ),
+    OUT_OF_DATE( "out of date" );
     
     private String message;
     

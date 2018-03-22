@@ -118,7 +118,7 @@ public class DefaultAppStoreService implements AppStoreService
         return webApps.get( 0 ).getNewestCompatibleVersion( dhisVersion ).getId();
     }
 
-    public void updateAppStatus( Set<App> apps )
+    public void updateAppStatus( Collection<App> apps )
     {
         Map<String, WebApp> webApps = getAppStore().stream()
             .collect( Collectors.toMap( WebApp::getName, Function.identity() ) );

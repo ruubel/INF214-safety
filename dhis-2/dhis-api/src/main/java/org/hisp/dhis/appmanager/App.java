@@ -84,6 +84,8 @@ public class App
 
     private Set<String> authorities = new HashSet<>();
 
+    private AppStatus appStatus = AppStatus.OK;
+
     // -------------------------------------------------------------------------
     // Logic
     // -------------------------------------------------------------------------
@@ -146,6 +148,17 @@ public class App
     public void setAppType( AppType appType )
     {
         this.appType = appType;
+    }
+
+    @JsonProperty
+    public AppStatus getAppStatus()
+    {
+        return this.appStatus;
+    }
+
+    public void setAppStatus( AppStatus appStatus )
+    {
+        this.appStatus = appStatus;
     }
 
     @JsonProperty( "launch_path" )
