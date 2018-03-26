@@ -222,7 +222,7 @@ public class JCloudsAppStorageService
 
                 app.setAppStorageSource( AppStorageSource.JCLOUDS );
                 app.setFolderName( resource.getName() );
-                app.setName( resource.getName().replaceAll("apps/", "" ).replaceAll("/", "") );
+                app.setName( resource.getName().replaceAll( APPS_DIR, "" ).replaceAll("/", "") );
                 appList.add( app );
             }
             catch ( IOException e )

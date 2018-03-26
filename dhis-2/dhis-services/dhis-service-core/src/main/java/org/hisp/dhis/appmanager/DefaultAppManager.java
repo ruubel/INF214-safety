@@ -274,11 +274,6 @@ public class DefaultAppManager
         return getAppStorageServiceByApp( app ).getAppResource( app, pageName );
     }
 
-    public void checkForUpdates()
-    {
-
-    }
-
     // -------------------------------------------------------------------------
     // Supportive methods
     // -------------------------------------------------------------------------
