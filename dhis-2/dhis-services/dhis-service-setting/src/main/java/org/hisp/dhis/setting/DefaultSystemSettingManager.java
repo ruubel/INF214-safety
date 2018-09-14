@@ -200,6 +200,11 @@ public class DefaultSystemSettingManager
     @Override
     public Serializable getSystemSetting( SettingKey setting )
     {
+        if ( setting == null )
+        {
+            return null;
+        }
+        
         Optional<Serializable> value = settingCache.get( setting.getName(),
             key -> getSystemSettingOptional( key, setting.getDefaultValue() ).orElse( null ) );
 
