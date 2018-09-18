@@ -52,7 +52,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     //TODO program indicator, tracked entity attribute
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( Indicator indicator )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.dataDimensionItems d where d.indicator = :indicator";
@@ -60,7 +59,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( DataElement dataElement )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.dataDimensionItems d where d.dataElement = :dataElement";
@@ -68,7 +66,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjectsByDataDimension( DataElement dataElement )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.dataElementDimensions d where d.dataElement = :dataElement";
@@ -76,7 +73,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjectsByDataDimension( TrackedEntityAttribute attribute )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.attributeDimensions d where d.attribute = :attribute";
@@ -84,7 +80,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( DataSet dataSet )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.dataDimensionItems d where d.reportingRate.dataSet = :dataSet";
@@ -92,7 +87,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( ProgramIndicator programIndicator )
     {
         String hql = "select distinct c from " + clazz.getName() + " c join c.dataDimensionItems d where d.programIndicator = :programIndicator";
@@ -100,7 +94,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( Period period )
     {
         String hql = "from " + clazz.getName() + " c where :period in elements(c.periods)";
@@ -108,7 +101,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( OrganisationUnit organisationUnit )
     {
         String hql = "from " + clazz.getName() + " c where :organisationUnit in elements(c.organisationUnits)";
@@ -116,7 +108,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( CategoryOptionGroup categoryOptionGroup )
     {
         String hql = "from " + clazz.getName() + " c where :categoryOptionGroup in elements(c.categoryOptionGroups)";
@@ -124,7 +115,6 @@ public class HibernateAnalyticalObjectStore<T extends BaseAnalyticalObject>
     }
     
     @Override
-    @SuppressWarnings("unchecked")
     public List<T> getAnalyticalObjects( LegendSet legendSet )
     {
         String hql = "from " + clazz.getName() + " c where c.legendSet = :legendSet";
