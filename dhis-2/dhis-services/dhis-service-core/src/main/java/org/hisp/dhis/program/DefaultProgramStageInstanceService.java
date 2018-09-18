@@ -32,7 +32,6 @@ import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.i18n.I18nFormat;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.period.PeriodType;
-import org.hisp.dhis.program.notification.ProgramNotificationPublisher;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueAuditService;
 import org.hisp.dhis.user.CurrentUserService;

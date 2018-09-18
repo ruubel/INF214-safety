@@ -34,19 +34,10 @@ import static org.hisp.dhis.system.util.GeoUtils.replaceUnsafeSvgText;
 import static org.junit.Assert.assertEquals;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
-import org.geotools.geojson.GeoJSON;
-import org.geotools.geojson.geom.GeometryJSON;
 import org.hisp.dhis.organisationunit.FeatureType;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Lars Helge Overland

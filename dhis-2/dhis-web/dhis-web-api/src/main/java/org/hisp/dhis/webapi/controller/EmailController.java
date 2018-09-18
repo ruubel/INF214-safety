@@ -60,7 +60,6 @@ public class EmailController
 {
     public static final String RESOURCE_PATH = "/email";
     private static final String SMTP_ERROR = "SMTP server not configured";
-    private static final String EMAIL_DISABLED = "Email message notifications system setting disabled";
 
     //--------------------------------------------------------------------------
     // Dependencies
