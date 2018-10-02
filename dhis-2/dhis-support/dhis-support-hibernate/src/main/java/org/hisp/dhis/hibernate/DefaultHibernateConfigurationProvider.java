@@ -40,8 +40,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.PostConstruct;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -51,10 +49,13 @@ import org.hibernate.cfg.Environment;
 import org.hisp.dhis.external.conf.ConfigurationKey;
 import org.hisp.dhis.external.conf.DhisConfigurationProvider;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ResourceUtils;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @author Torgeir Lorange Ostby
@@ -88,6 +89,7 @@ public class DefaultHibernateConfigurationProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DhisConfigurationProvider configurationProvider;
 
     public void setConfigurationProvider( DhisConfigurationProvider configurationProvider )

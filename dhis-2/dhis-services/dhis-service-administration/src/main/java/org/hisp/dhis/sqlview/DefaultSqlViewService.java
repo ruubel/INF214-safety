@@ -41,6 +41,7 @@ import org.hisp.dhis.query.QueryParserException;
 import org.hisp.dhis.query.QueryUtils;
 import org.hisp.dhis.system.grid.ListGrid;
 import org.hisp.dhis.util.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -73,7 +74,8 @@ public class DefaultSqlViewService
     {
         this.statementBuilder = statementBuilder;
     }
-    
+
+    @Autowired
     private DhisConfigurationProvider config;
 
     public void setConfig( DhisConfigurationProvider config )

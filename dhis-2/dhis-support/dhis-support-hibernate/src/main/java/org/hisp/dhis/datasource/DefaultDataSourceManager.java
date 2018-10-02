@@ -50,6 +50,7 @@ import org.hisp.dhis.util.ObjectUtils;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Lars Helge Overland
@@ -93,6 +94,7 @@ public class DefaultDataSourceManager
     // Dependencies
     // -------------------------------------------------------------------------
 
+    @Autowired
     private DhisConfigurationProvider config;
     
     public void setConfig( DhisConfigurationProvider config )

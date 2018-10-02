@@ -39,10 +39,15 @@ import org.hisp.dhis.commons.util.SystemUtils;
 import org.hisp.dhis.encryption.EncryptionStatus;
 import org.hisp.dhis.external.location.LocationManager;
 import org.hisp.dhis.external.location.LocationManagerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,6 +61,8 @@ import java.util.stream.Stream;
 /**
  * @author Lars Helge Overland
  */
+@Component("dhisConfigurationProvider")
+@Profile("!test")
 public class DefaultDhisConfigurationProvider
     implements DhisConfigurationProvider
 {
@@ -72,7 +79,8 @@ public class DefaultDhisConfigurationProvider
     // Dependencies
     // -------------------------------------------------------------------------
 
-    private LocationManager locationManager;
+    @Autowired
+    public LocationManager locationManager;
 
     public void setLocationManager( LocationManager locationManager )
     {
@@ -89,6 +97,7 @@ public class DefaultDhisConfigurationProvider
      */
     private Optional<GoogleCredential> googleCredential = Optional.empty();
 
+    @PostConstruct
     public void init()
     {
         // ---------------------------------------------------------------------

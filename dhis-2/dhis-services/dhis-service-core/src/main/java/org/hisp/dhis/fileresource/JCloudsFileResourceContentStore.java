@@ -54,6 +54,7 @@ import org.jclouds.http.HttpResponseException;
 import org.jclouds.rest.AuthorizationException;
 import org.jclouds.s3.reference.S3Constants;
 import org.joda.time.Minutes;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -103,6 +104,7 @@ public class JCloudsFileResourceContentStore
         this.locationManager = locationManager;
     }
 
+    @Autowired
     private DhisConfigurationProvider configurationProvider;
 
     public void setConfigurationProvider( DhisConfigurationProvider configurationProvider )

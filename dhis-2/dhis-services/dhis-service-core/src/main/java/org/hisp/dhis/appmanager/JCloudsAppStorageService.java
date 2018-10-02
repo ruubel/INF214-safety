@@ -55,6 +55,7 @@ import org.jclouds.http.HttpResponseException;
 import org.jclouds.rest.AuthorizationException;
 import org.jclouds.s3.reference.S3Constants;
 import org.joda.time.Minutes;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -118,6 +119,7 @@ public class JCloudsAppStorageService
         this.locationManager = locationManager;
     }
 
+    @Autowired
     private DhisConfigurationProvider configurationProvider;
 
     public void setConfigurationProvider( DhisConfigurationProvider configurationProvider )
