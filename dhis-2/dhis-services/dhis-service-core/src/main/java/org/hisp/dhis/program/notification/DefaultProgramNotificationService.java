@@ -35,6 +35,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.common.DeliveryChannel;
 import org.hisp.dhis.common.IdentifiableObjectManager;
+import org.hisp.dhis.eventdatavalue.EventDataValue;
 import org.hisp.dhis.message.MessageConversationParams;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.message.MessageType;
@@ -53,7 +54,6 @@ import org.hisp.dhis.system.util.Clock;
 import org.hisp.dhis.system.util.DateUtils;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.user.User;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +72,7 @@ public class DefaultProgramNotificationService
 
     private static final Predicate<ProgramNotificationInstance> IS_SCHEDULED_BY_PROGRAM_RULE = pnt ->
         Objects.nonNull( pnt ) && NotificationTrigger.PROGRAM_RULE.equals( pnt.getProgramNotificationTemplate().getNotificationTrigger() ) &&
-        pnt.getScheduledAt() != null && DateUtils.isToday( pnt.getScheduledAt() );
+            pnt.getScheduledAt() != null && DateUtils.isToday( pnt.getScheduledAt() );
 
     // -------------------------------------------------------------------------
     // Dependencies
@@ -337,7 +337,7 @@ public class DefaultProgramNotificationService
         NotificationMessage message = programStageNotificationRenderer.render( psi, template );
 
         return new ProgramMessage(
-                message.getSubject(), message.getMessage(), resolveProgramStageNotificationRecipients( template, psi.getOrganisationUnit(),
+            message.getSubject(), message.getMessage(), resolveProgramStageNotificationRecipients( template, psi.getOrganisationUnit(),
                 psi ), Sets.newHashSet( template.getDeliveryChannels() ), psi );
     }
 
@@ -346,13 +346,13 @@ public class DefaultProgramNotificationService
         NotificationMessage message = programNotificationRenderer.render( programInstance, template );
 
         return new ProgramMessage(
-                message.getSubject(), message.getMessage(),
-                resolveProgramNotificationRecipients( template, programInstance.getOrganisationUnit(), programInstance ),
+            message.getSubject(), message.getMessage(),
+            resolveProgramNotificationRecipients( template, programInstance.getOrganisationUnit(), programInstance ),
                 Sets.newHashSet( template.getDeliveryChannels() ), programInstance );
     }
 
     private Set<User> resolveDhisMessageRecipients(
-            ProgramNotificationTemplate template, @Nullable ProgramInstance programInstance, @Nullable ProgramStageInstance programStageInstance )
+        ProgramNotificationTemplate template, @Nullable ProgramInstance programInstance, @Nullable ProgramStageInstance programStageInstance )
     {
         if ( programInstance == null && programStageInstance == null )
         {
@@ -369,7 +369,7 @@ public class DefaultProgramNotificationService
 
         if ( recipientType == ProgramNotificationRecipient.USER_GROUP )
         {
-             recipients = template.getRecipientUserGroup().getMembers();
+            recipients = template.getRecipientUserGroup().getMembers();
 
             final boolean limitToHierarchy = BooleanUtils.toBoolean( template.getNotifyUsersInHierarchyOnly() );
 
@@ -404,22 +404,22 @@ public class DefaultProgramNotificationService
     }
 
     private ProgramMessageRecipients resolveProgramNotificationRecipients(
-            ProgramNotificationTemplate template, OrganisationUnit organisationUnit, ProgramInstance programInstance )
+        ProgramNotificationTemplate template, OrganisationUnit organisationUnit, ProgramInstance programInstance )
     {
         return resolveRecipients( template, organisationUnit, programInstance.getEntityInstance(), programInstance );
     }
 
     private ProgramMessageRecipients resolveProgramStageNotificationRecipients(
-            ProgramNotificationTemplate template, OrganisationUnit organisationUnit, ProgramStageInstance psi )
+        ProgramNotificationTemplate template, OrganisationUnit organisationUnit, ProgramStageInstance psi )
     {
         ProgramMessageRecipients recipients = new ProgramMessageRecipients();
 
         if ( template.getNotificationRecipient() == ProgramNotificationRecipient.DATA_ELEMENT
-                && template.getRecipientDataElement() != null )
+            && template.getRecipientDataElement() != null )
         {
-            List<String> recipientList = psi.getDataValues().stream()
-                .filter( dv -> template.getRecipientDataElement().getUid().equals( dv.getDataElement().getUid() ) )
-                .map( TrackedEntityDataValue::getValue )
+            List<String> recipientList = psi.getEventDataValues().stream()
+                .filter( dv -> template.getRecipientDataElement().getUid().equals( dv.getDataElement() ) )
+                .map( EventDataValue::getValue )
                 .collect( Collectors.toList() );
 
             if ( template.getDeliveryChannels().contains( DeliveryChannel.SMS ) )
@@ -442,7 +442,7 @@ public class DefaultProgramNotificationService
     }
 
     private ProgramMessageRecipients resolveRecipients( ProgramNotificationTemplate template, OrganisationUnit ou,
-                                                        TrackedEntityInstance tei, ProgramInstance pi)
+        TrackedEntityInstance tei, ProgramInstance pi)
     {
         ProgramMessageRecipients recipients = new ProgramMessageRecipients();
 
@@ -457,7 +457,7 @@ public class DefaultProgramNotificationService
             recipients.setTrackedEntityInstance( tei );
         }
         else if ( recipientType == ProgramNotificationRecipient.PROGRAM_ATTRIBUTE
-                && template.getRecipientProgramAttribute() != null )
+            && template.getRecipientProgramAttribute() != null )
         {
             List<String> recipientList = pi.getEntityInstance().getTrackedEntityAttributeValues().stream()
                 .filter( av -> template.getRecipientProgramAttribute().getUid().equals( av.getAttribute().getUid() ) )

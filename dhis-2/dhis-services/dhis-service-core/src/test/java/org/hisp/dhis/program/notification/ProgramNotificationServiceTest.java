@@ -35,6 +35,7 @@ import org.hisp.dhis.common.DeliveryChannel;
 import org.hisp.dhis.common.IdentifiableObjectManager;
 import org.hisp.dhis.common.ValueType;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.eventdatavalue.EventDataValue;
 import org.hisp.dhis.message.MessageConversationParams;
 import org.hisp.dhis.message.MessageService;
 import org.hisp.dhis.notification.NotificationMessage;
@@ -132,6 +133,9 @@ public class ProgramNotificationServiceTest extends DhisConvenienceTest
     private DataElement dataElementEmail;
     private TrackedEntityDataValue dataValue;
     private TrackedEntityDataValue dataValueEmail;
+
+    private EventDataValue eventDataValue;
+    private EventDataValue eventDataValueEmail;
 
     private TrackedEntityAttribute trackedEntityAttribute;
     private TrackedEntityAttribute trackedEntityAttributeEmail;
@@ -584,12 +588,23 @@ public class ProgramNotificationServiceTest extends DhisConvenienceTest
         dataValue.setDataElement( dataElement );
         dataValue.setValue( DE_PHONE_NUMBER );
 
+        eventDataValue = new EventDataValue();
+        eventDataValue.setAutoFields();
+        eventDataValue.setDataElement( dataElement.getUid() );
+        eventDataValue.setValue( DE_PHONE_NUMBER );
+
         dataValueEmail = new TrackedEntityDataValue();
         dataValueEmail.setAutoFields();
         dataValueEmail.setDataElement( dataElementEmail );
         dataValueEmail.setValue( DE_EMAIL );
 
+        eventDataValueEmail = new EventDataValue();
+        eventDataValueEmail.setAutoFields();
+        eventDataValueEmail.setDataElement( dataElementEmail.getUid() );
+        eventDataValueEmail.setValue( DE_EMAIL );
+
         programStageInstance.getDataValues().add( dataValue );
+        programStageInstance.getEventDataValues().add( eventDataValue );
 
         // lists returned by stubs
         programStageInstances.add( programStageInstance );

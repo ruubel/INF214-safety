@@ -109,7 +109,7 @@ public class DefaultProgramStageInstanceService
         else
         {
             // Soft delete
-            programStageInstance.setDeleted( !forceDelete );
+            programStageInstance.setDeleted( true );
             programStageInstanceStore.save( programStageInstance );
         }
 

@@ -53,7 +53,7 @@ import java.util.Properties;
 @SuppressWarnings("rawtypes")
 public class JsonBinaryType implements UserType, ParameterizedType
 {
-    public static final ObjectMapper MAPPER = new ObjectMapper();
+    static final ObjectMapper MAPPER = new ObjectMapper();
 
     static
     {
