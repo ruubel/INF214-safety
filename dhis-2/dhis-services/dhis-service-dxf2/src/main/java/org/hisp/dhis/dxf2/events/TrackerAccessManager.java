@@ -29,6 +29,8 @@ package org.hisp.dhis.dxf2.events;
  */
 
 import org.hisp.dhis.category.CategoryOptionCombo;
+import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.eventdatavalue.EventDataValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
@@ -66,7 +68,17 @@ public interface TrackerAccessManager
 
     List<String> canRead( User user, TrackedEntityDataValue dataValue );
 
-    List<String> canWrite( User user, TrackedEntityDataValue dataValue );
+//    List<String> canWrite( User user, TrackedEntityDataValue dataValue );
+
+    /**
+     * Checks the sharing write access to EventDataValue
+     *
+     * @param user User validated for write access
+     * @param programStageInstance ProgramStageInstance under which the EventDataValue belongs
+     * @param dataElement DataElement of EventDataValue
+     * @return Empty list if write access allowed, list of errors otherwise.
+     */
+    List<String> canWrite( User user, ProgramStageInstance programStageInstance, DataElement dataElement );
 
     List<String> canRead( User user, CategoryOptionCombo categoryOptionCombo );
 

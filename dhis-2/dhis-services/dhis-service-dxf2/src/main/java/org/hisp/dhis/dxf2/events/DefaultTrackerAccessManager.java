@@ -508,18 +508,16 @@ public class DefaultTrackerAccessManager implements TrackerAccessManager
     }
 
     @Override
-    public List<String> canWrite( User user, TrackedEntityDataValue dataValue )
+    public List<String> canWrite( User user, ProgramStageInstance programStageInstance, DataElement dataElement )
     {
         List<String> errors = new ArrayList<>();
 
-        if ( user == null || user.isSuper() || dataValue == null )
+        if ( user == null || user.isSuper() )
         {
             return errors;
         }
 
-        errors.addAll( canWrite( user, dataValue.getProgramStageInstance() ) );
-
-        DataElement dataElement = dataValue.getDataElement();
+        errors.addAll( canWrite( user, programStageInstance ) );
 
         if ( !aclService.canRead( user, dataElement ) )
         {
