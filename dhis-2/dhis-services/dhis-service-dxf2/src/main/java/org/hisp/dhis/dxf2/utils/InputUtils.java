@@ -11,8 +11,12 @@ import org.hisp.dhis.dataelement.DataElementCategoryService;
 import org.hisp.dhis.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
+
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /*
  * Copyright (c) 2004-2018, University of Oslo
@@ -47,6 +51,10 @@ import java.util.Set;
  */
 public class InputUtils
 {
+    private static Cache<String, Integer> AOC_UID_ID_CACHE = Caffeine.newBuilder()
+        .expireAfterAccess( 1, TimeUnit.HOURS ).initialCapacity( 1000 )
+        .maximumSize( 20000 ).build();
+
     @Autowired
     private DataElementCategoryService categoryService;
 
@@ -67,6 +75,15 @@ public class InputUtils
      */
     public DataElementCategoryOptionCombo getAttributeOptionCombo( String cc, String cp, boolean skipFallback )
     {
+        String cacheKey = cc + "-" + cp + "-" + skipFallback;
+
+        Integer id = AOC_UID_ID_CACHE.getIfPresent( cacheKey );
+
+        if ( id != null )
+        {
+            categoryService.getDataElementCategoryOptionCombo( id );
+        }
+
         Set<String> opts = TextUtils.splitToArray( cp, TextUtils.SEMICOLON );
 
         // ---------------------------------------------------------------------
@@ -95,7 +112,14 @@ public class InputUtils
             categoryCombo = categoryService.getDefaultDataElementCategoryCombo();
         }
 
-        return getAttributeOptionCombo( categoryCombo, cp, null, IdScheme.UID );
+        DataElementCategoryOptionCombo aoc = getAttributeOptionCombo( categoryCombo, cp, null, IdScheme.UID );
+
+        if ( aoc != null )
+        {
+            AOC_UID_ID_CACHE.put( cacheKey, aoc.getId() );
+        }
+
+        return aoc;
     }
 
     /**

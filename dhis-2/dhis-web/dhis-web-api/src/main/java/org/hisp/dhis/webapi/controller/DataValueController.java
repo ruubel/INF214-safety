@@ -185,9 +185,9 @@ public class DataValueController
 
         DataSet dataSet = getAndValidateOptionalDataSet( ds, dataElement );
 
-        validateInvalidFuturePeriod( period, dataElement );
+        //validateInvalidFuturePeriod( period, dataElement );
 
-        validateAttributeOptionComboWithOrgUnitAndPeriod( attributeOptionCombo, organisationUnit, period );
+        //validateAttributeOptionComboWithOrgUnitAndPeriod( attributeOptionCombo, organisationUnit, period );
 
         String valueValid = ValidationUtils.dataValueIsValid( value, dataElement );
 
@@ -213,7 +213,7 @@ public class DataValueController
         // ---------------------------------------------------------------------
         // Optional constraints
         // ---------------------------------------------------------------------
-
+        /*
         if ( strictPeriods && !dataElement.getPeriodTypes().contains( period.getPeriodType() ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict(
@@ -231,7 +231,7 @@ public class DataValueController
             throw new WebMessageException( WebMessageUtils.conflict(
                 "Data element: " + dataElement.getUid() + " must be assigned through data sets to organisation unit: " + organisationUnit.getUid() ) );
         }
-
+        */
         // ---------------------------------------------------------------------
         // Locking validation
         // ---------------------------------------------------------------------
@@ -245,7 +245,9 @@ public class DataValueController
         // Period validation
         // ---------------------------------------------------------------------
 
+        /*
         validateDataInputPeriodForDataElementAndPeriod( dataElement, period, dataSet );
+        */
 
         // ---------------------------------------------------------------------
         // Assemble and save data value
@@ -277,12 +279,14 @@ public class DataValueController
             // Data Sharing check
             // ---------------------------------------------------------------------
 
+            /*
             List<String> errors = accessManager.canWrite( currentUser, dataValue );
 
             if ( !errors.isEmpty() )
             {
                 throw new WebMessageException( WebMessageUtils.forbidden( errors.toString() ) );
             }
+            */
 
             dataValueService.addDataValue( dataValue );
         }
@@ -336,7 +340,7 @@ public class DataValueController
             }
 
             // -----------------------------------------------------------------
-            // Value and comment are sent individually, so null checks must be 
+            // Value and comment are sent individually, so null checks must be
             // made for each. Empty string is sent for clearing a value.
             // -----------------------------------------------------------------
 
@@ -641,10 +645,11 @@ public class DataValueController
         {
             throw new WebMessageException( WebMessageUtils.conflict( "Illegal data element identifier: " + de ) );
         }
+        /*
         else if ( !aclService.canRead( user, dataElement ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "User does not have metadata read access for DataElement: " + de ) );
-        }
+        }*/
 
         return dataElement;
     }
@@ -709,12 +714,13 @@ public class DataValueController
             throw new WebMessageException( WebMessageUtils.conflict( "Illegal organisation unit identifier: " + ou ) );
         }
 
+        /*
         boolean isInHierarchy = organisationUnitService.isInUserHierarchy( organisationUnit );
 
         if ( !isInHierarchy )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "Organisation unit is not in the hierarchy of the current user: " + ou ) );
-        }
+        }*/
 
         return organisationUnit;
     }
@@ -734,10 +740,12 @@ public class DataValueController
             throw new WebMessageException( WebMessageUtils.conflict( "Data set does not exist: " + ds ) );
         }
 
+        /*
         if ( !dataSet.getDataElements().contains( dataElement ) )
         {
             throw new WebMessageException( WebMessageUtils.conflict( "Data set " + ds + " does not contain data element: " + dataElement.getUid() ) );
         }
+        */
 
         return dataSet;
     }
