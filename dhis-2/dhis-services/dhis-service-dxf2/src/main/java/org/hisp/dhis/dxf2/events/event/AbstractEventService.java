@@ -30,7 +30,6 @@ package org.hisp.dhis.dxf2.events.event;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -1281,12 +1280,12 @@ public abstract class AbstractEventService
     private void processDataValues( ProgramStageInstance programStageInstance, Event event, boolean isUpdate,
         boolean singleValue, ImportOptions importOptions, ImportSummary importSummary ) {
 
-        Map<String, EventDataValue> dataElementToValueMap = getDataElementToEventDataValueMap( programStageInstance.getEventDataValues() );
+        Map<String, EventDataValue> dataElementValueMap = getDataElementToEventDataValueMap( programStageInstance.getEventDataValues() );
 
         boolean validateMandatoryAttributes = doValidationOfMandatoryAttributes( importOptions.getUser() );
         if ( validateMandatoryAttributes )
         {
-            if ( !validatePresenceOfMandatoryDataElementsEvent( event, programStageInstance, importSummary, singleValue ) )
+            if ( !validatePresenceOfMandatoryDataElements( event, programStageInstance, importSummary, singleValue ) )
             {
                 importSummary.setStatus( ImportStatus.ERROR );
                 importSummary.incrementIgnored();
@@ -1311,7 +1310,7 @@ public abstract class AbstractEventService
             else if ( validateDataValue( programStageInstance, importOptions.getUser(), dataElement, dataValue.getValue(), importSummary )
                 && !importOptions.isDryRun())
             {
-                prepareDataValueForStorage( updatedOrNewDataValues, removedDataValuesDueToEmptyValue, dataElementToValueMap, dataValue, dataElement, storedBy );
+                prepareDataValueForStorage( updatedOrNewDataValues, removedDataValuesDueToEmptyValue, dataElementValueMap, dataValue, dataElement, storedBy );
             }
         }
 
@@ -1512,7 +1511,7 @@ public abstract class AbstractEventService
         return user == null || !user.isAuthorized( Authorities.F_IGNORE_TRACKER_REQUIRED_VALUE_VALIDATION.getAuthority() );
     }
 
-    private boolean validatePresenceOfMandatoryDataElementsEvent(Event event, ProgramStageInstance programStageInstance, ImportSummary importSummary, boolean isSingleValueUpdate) {
+    private boolean validatePresenceOfMandatoryDataElements(Event event, ProgramStageInstance programStageInstance, ImportSummary importSummary, boolean isSingleValueUpdate) {
         ValidationStrategy validationStrategy = programStageInstance.getProgramStage().getValidationStrategy();
 
         if ( validationStrategy == ValidationStrategy.ON_UPDATE_AND_INSERT ||
