@@ -114,7 +114,6 @@ import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
 import org.hisp.dhis.trackedentity.TrackerOwnershipAccessManager;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityComment;
 import org.hisp.dhis.trackedentitycomment.TrackedEntityCommentService;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.CurrentUserService;
 import org.hisp.dhis.user.User;
@@ -866,19 +865,28 @@ public abstract class AbstractEventService
             event.setTrackedEntityInstance( programStageInstance.getProgramInstance().getEntityInstance().getUid() );
         }
 
-        Collection<TrackedEntityDataValue> dataValues;
+        Collection<EventDataValue> dataValues;
         if ( !isSynchronizationQuery )
         {
-            dataValues = dataValueService.getTrackedEntityDataValues( programStageInstance );
+            dataValues = programStageInstance.getEventDataValues();
         }
         else
         {
-            dataValues = dataValueService.getTrackedEntityDataValuesForSynchronization( programStageInstance );
+            Set<String> dataElementsToSync = programStageInstance.getProgramStage().getProgramStageDataElements().stream()
+                .filter( psde -> !psde.getSkipSynchronization() )
+                .map( psde -> psde.getDataElement().getUid() )
+                .collect( Collectors.toSet());
+
+            dataValues = programStageInstance.getEventDataValues().stream()
+                .filter( dv -> dataElementsToSync.contains( dv.getDataElement() ) )
+                .collect( Collectors.toSet());
         }
 
-        for ( TrackedEntityDataValue dataValue : dataValues )
+        for ( EventDataValue dataValue : dataValues )
         {
-            errors = trackerAccessManager.canRead( user, dataValue );
+            DataElement dataElement = getDataElement( IdScheme.UID, dataValue.getDataElement() );
+
+            errors = trackerAccessManager.canRead( user, programStageInstance, dataElement );
 
             if ( !errors.isEmpty() )
             {
@@ -888,7 +896,7 @@ public abstract class AbstractEventService
             DataValue value = new DataValue();
             value.setCreated( DateUtils.getIso8601NoTz( dataValue.getCreated() ) );
             value.setLastUpdated( DateUtils.getIso8601NoTz( dataValue.getLastUpdated() ) );
-            value.setDataElement( dataValue.getDataElement().getUid() );
+            value.setDataElement( dataValue.getDataElement() );
             value.setValue( dataValue.getValue() );
             value.setProvidedElsewhere( dataValue.getProvidedElsewhere() );
             value.setStoredBy( dataValue.getStoredBy() );

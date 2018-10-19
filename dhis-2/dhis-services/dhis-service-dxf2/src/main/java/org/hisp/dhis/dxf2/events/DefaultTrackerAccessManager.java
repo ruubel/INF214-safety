@@ -43,7 +43,6 @@ import org.hisp.dhis.security.acl.AclService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityType;
 import org.hisp.dhis.trackedentity.TrackerOwnershipAccessManager;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.user.User;
 
 import java.util.ArrayList;
@@ -486,18 +485,16 @@ public class DefaultTrackerAccessManager implements TrackerAccessManager
     }
 
     @Override
-    public List<String> canRead( User user, TrackedEntityDataValue dataValue )
+    public List<String> canRead( User user, ProgramStageInstance programStageInstance, DataElement dataElement )
     {
         List<String> errors = new ArrayList<>();
 
-        if ( user == null || user.isSuper() || dataValue == null )
+        if ( user == null || user.isSuper() )
         {
             return errors;
         }
 
-        errors.addAll( canRead( user, dataValue.getProgramStageInstance() ) );
-
-        DataElement dataElement = dataValue.getDataElement();
+        errors.addAll( canRead( user, programStageInstance ) );
 
         if ( !aclService.canRead( user, dataElement ) )
         {

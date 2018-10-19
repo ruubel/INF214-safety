@@ -66,7 +66,7 @@ public interface TrackerAccessManager
 
     List<String> canWrite( User user, Relationship relationship );
 
-    List<String> canRead( User user, TrackedEntityDataValue dataValue );
+    List<String> canRead( User user, ProgramStageInstance programStageInstance, DataElement dataElement );
 
 //    List<String> canWrite( User user, TrackedEntityDataValue dataValue );
 

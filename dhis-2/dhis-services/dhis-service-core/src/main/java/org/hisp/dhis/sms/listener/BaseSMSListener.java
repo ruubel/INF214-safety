@@ -33,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.category.CategoryService;
+import org.hisp.dhis.eventdatavalue.EventDataValue;
 import org.hisp.dhis.message.MessageSender;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.*;
@@ -43,7 +44,6 @@ import org.hisp.dhis.sms.incoming.IncomingSmsListener;
 import org.hisp.dhis.sms.incoming.IncomingSmsService;
 import org.hisp.dhis.sms.incoming.SmsMessageStatus;
 import org.hisp.dhis.system.util.SmsUtils;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValueService;
 import org.hisp.dhis.user.User;
 import org.hisp.dhis.user.UserService;
@@ -267,14 +267,13 @@ public abstract class BaseSMSListener implements IncomingSmsListener
 
         for ( SMSCode smsCode : smsCommand.getCodes() )
         {
-            TrackedEntityDataValue dataValue = new TrackedEntityDataValue();
-            dataValue.setAutoFields();
-            dataValue.setDataElement( smsCode.getDataElement() );
-            dataValue.setProgramStageInstance( programStageInstance );
-            dataValue.setValue( commandValuePairs.get( smsCode.getCode() ) );
+            EventDataValue dataValueEvent = new EventDataValue( smsCode.getDataElement().getUid(), commandValuePairs.get( smsCode.getCode() ) );
+            dataValueEvent.setAutoFields();
 
-            trackedEntityDataValueService.saveTrackedEntityDataValue( dataValue );
+            programStageInstance.getEventDataValues().add( dataValueEvent );
         }
+
+        programStageInstanceService.updateProgramStageInstance( programStageInstance );
 
         update( sms, SmsMessageStatus.PROCESSED, true );
 

@@ -40,14 +40,20 @@ import org.hisp.dhis.eventdatavalue.EventDataValue;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramStageInstance;
-import org.hisp.dhis.programrule.*;
+import org.hisp.dhis.programrule.ProgramRule;
+import org.hisp.dhis.programrule.ProgramRuleAction;
+import org.hisp.dhis.programrule.ProgramRuleActionType;
+import org.hisp.dhis.programrule.ProgramRuleService;
+import org.hisp.dhis.programrule.ProgramRuleVariable;
+import org.hisp.dhis.programrule.ProgramRuleVariableService;
+import org.hisp.dhis.programrule.ProgramRuleVariableSourceType;
 import org.hisp.dhis.rules.models.*;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
-import org.hisp.dhis.trackedentitydatavalue.TrackedEntityDataValue;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.plugin.dom.exception.InvalidStateException;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -345,7 +351,7 @@ public class DefaultProgramRuleEntityMapperService
         DataElement dataElement = dataElementService.getDataElement( dataValue.getDataElement() );
         if ( dataElement == null ) {
             log.error( "DataElement " + dataValue.getDataElement() + " was not found." );
-            throw new InvalidStateException( "Required DataElement(" + dataValue.getDataElement() + ") was not found." );
+            throw new IllegalStateException( "Required DataElement(" + dataValue.getDataElement() + ") was not found." );
         }
 
         //TODO: Maybe I should keep cache of DataElements to ValueTypes (Map<DataElementUid, ValueType>)
