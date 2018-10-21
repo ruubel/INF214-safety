@@ -245,9 +245,7 @@ public class DataValueController
         // Period validation
         // ---------------------------------------------------------------------
 
-        /*
         validateDataInputPeriodForDataElementAndPeriod( dataElement, period, dataSet );
-        */
 
         // ---------------------------------------------------------------------
         // Assemble and save data value
