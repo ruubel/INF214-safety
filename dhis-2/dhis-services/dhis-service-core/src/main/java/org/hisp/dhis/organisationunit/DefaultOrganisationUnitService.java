@@ -300,6 +300,7 @@ public class DefaultOrganisationUnitService
         OrganisationUnitQueryParams params = new OrganisationUnitQueryParams();
         params.setParents( Sets.newHashSet( organisationUnit ) );
         params.setMaxLevels( levels );
+        params.setFetchChildren( true );
 
         return organisationUnitStore.getOrganisationUnits( params );
     }
